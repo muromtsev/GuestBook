@@ -5,46 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guestbook</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .guestbook-card {
-            max-width: 600px;
-            margin: 50px auto;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .btn-submit {
-            background-color: #6c63ff;
-            border: none;
-        }
-        .btn-submit:hover {
-            background-color: #5a52d6;
-        }
-        .entry-card {
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
-            margin-bottom: 20px;
-        }
-        .entry-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .entry-header {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .entry-date {
-            color: #fafafa;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
-<div class="container">
+<div class="container py-5">
+    <div class="guestbook-header text-center">
+        <h1 class="guestbook-title">📖 Гостевая книга</h1>
+        <p class="guestbook-subtitle">
+            Оставьте ваши пожелания, отзывы или просто добрые слова.
+        </p>
+    </div>
     <div class="card guestbook-card">
         <div class="card-header bg-primary text-white text-center py-3">
             <h2>✍️ Добавить запись</h2>
@@ -93,15 +63,23 @@
         </div><!--card-body-->
     </div><!--guestbook-card-->
     <!-- Список записей -->
-    <div class="row">
-        <div class="col-md-8 mx-auto">
-            <div th:each="entry : ${entries}" class="card entry-card mb-3">
-                <div class="card-body">
-                    <div class="card-header bg-primary text-white entry-header d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0" th:text="${entry.getAuthorName()}">Автор</h5>
-                        <small class="entry-date" th:text="${#temporals.format(entry.getCreatedAt(), 'dd.MM.yyyy HH:mm:ss')}">01.01.2023 12:00</small>
+    <div th:each="entry : ${entries}" class="card entry-card">
+        <div class="card-body">
+            <div class="d-flex align-items-start">
+                <img th:src="${entry.getAvatarUrl()}"
+                     src="https://api.dicebear.com/7.x/identicon/svg?seed=JohnDoe"
+                     class="avatar me-3"
+                     alt="Аватар">
+
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="username" th:text="${entry.getAuthorName()}">Иван Иванов</span>
+                        <small class="timestamp" th:text="${#temporals.format(entry.getCreatedAt(), 'dd.MM.yyyy HH:mm')}">01.01.2023 14:30</small>
                     </div>
-                    <p class="card-text" th:text="${entry.message}">Текст сообщения...</p>
+
+                    <p class="message-text mb-0" th:text="${entry.getMessage()}">
+                        Это пример сообщения в гостевой книге. Здесь может быть длинный текст, который будет автоматически переноситься на новую строку.
+                    </p>
                 </div>
             </div>
         </div>
@@ -111,3 +89,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
