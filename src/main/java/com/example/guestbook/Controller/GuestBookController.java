@@ -37,6 +37,8 @@ public class GuestBookController {
     {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
+            List<GuestBookEntry> entries = guestBookService.getGuestBookEntries();
+            model.addAttribute("entries", entries);
             return "index";
         }
 
